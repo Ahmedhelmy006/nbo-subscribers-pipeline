@@ -13,16 +13,7 @@ from dotenv import load_dotenv
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-def load_environment_variables():
-    """Explicitly load environment variables from .env file"""
-    try:
-        # Attempt to load .env file from project root
-        load_dotenv(dotenv_path=BASE_DIR / '.env')
-        logger.info("Successfully loaded environment variables from .env")
-    except Exception as e:
-        logger.error(f"Error loading .env file: {e}")
 
-load_environment_variables()
 
 # Base directories
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -35,6 +26,19 @@ REPORTS_DIR = BASE_DIR / "reports"
 # Create required directories
 for directory in [DATA_DIR, OUTPUT_DIR, LOGS_DIR, STACKS_DIR, REPORTS_DIR]:
     directory.mkdir(exist_ok=True, parents=True)
+
+
+def load_environment_variables():
+    """Explicitly load environment variables from .env file"""
+    try:
+        # Attempt to load .env file from project root
+        load_dotenv(dotenv_path=BASE_DIR / '.env')
+        logger.info("Successfully loaded environment variables from .env")
+    except Exception as e:
+        logger.error(f"Error loading .env file: {e}")
+
+load_environment_variables()
+
 
 # API Configuration
 API_KEY = os.getenv('KIT_V4_API_KEY')
