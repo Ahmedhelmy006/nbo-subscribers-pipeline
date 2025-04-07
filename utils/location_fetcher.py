@@ -1,19 +1,38 @@
 import json
 import logging
+from pathlib import Path
+import sys
+import os
+# Import the settings to get the file path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+from config import settings
 
 logger = logging.getLogger(__name__)
 
 class LocationIdentifier:
-    JSON_PATH = r"data\countries+states+cities.json"
+    # Use the path from settings, with a robust Path conversion
+    JSON_PATH = Path(settings.COUNTRIES_JSON_PATH)
 
     def __init__(self, city=None, state=None):
         self.city = city.lower().strip() if city else None
         self.state = state.lower().strip() if state else None
         
         try:
+            # Use the Path object to open the file
             with open(self.JSON_PATH, 'r', encoding='utf-8') as f:
                 self.countries = json.load(f)
         except FileNotFoundError:
+            # Improved error message with actual file path
+            logger.error(f"JSON file not found. Checked path: {self.JSON_PATH}")
+            logger.error(f"Absolute path: {self.JSON_PATH.resolve()}")
+            
+            # Optional: Log contents of the data directory
+            data_dir = self.JSON_PATH.parent
+            logger.error("Files in data directory:")
+            for file in data_dir.glob('*'):
+                logger.error(f"  - {file.name}")
+            
             raise RuntimeError(f"JSON file not found at: {self.JSON_PATH}")
         except Exception as e:
             raise RuntimeError(f"Failed to load JSON data: {str(e)}")
