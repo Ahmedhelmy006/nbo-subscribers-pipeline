@@ -6,10 +6,23 @@ import sys
 import logging
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+
 
 # Setup basic logging before config is fully loaded
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+def load_environment_variables():
+    """Explicitly load environment variables from .env file"""
+    try:
+        # Attempt to load .env file from project root
+        load_dotenv(dotenv_path=BASE_DIR / '.env')
+        logger.info("Successfully loaded environment variables from .env")
+    except Exception as e:
+        logger.error(f"Error loading .env file: {e}")
+
+load_environment_variables()
 
 # Base directories
 BASE_DIR = Path(__file__).resolve().parent.parent
