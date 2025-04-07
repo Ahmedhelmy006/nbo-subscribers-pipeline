@@ -26,7 +26,7 @@ class GoogleSearch:
     Performs Google searches to find LinkedIn profiles.
     """
     
-    def __init__(self, headless=False, max_results=None):
+    def __init__(self, headless=True, max_results=None):
         """
         Initialize the Google search component.
         
