@@ -44,7 +44,8 @@ class CountryPurchasePowerChecker:
                         country_entry = {
                             'purchasing_power': country.get('purchasing_power', 'Unknown'),
                             'purchase_score': country.get('purchase_score', 0),
-                            'subscriber_region': country.get('region', 'Unknown'),
+                            # Format region name - replace underscores with spaces and use title case
+                            'subscriber_region': self._format_region_name(country.get('region', 'Unknown')),
                             'timezone': country.get('timezones', [{}])[0].get('gmtOffsetName', 'Unknown')
                         }
                         
@@ -102,7 +103,7 @@ class CountryPurchasePowerChecker:
         if not country_data:
             return 'Unknown'
             
-        return country_data.get('purchasing_power', 'Unknown')
+        return country_data.get('purchasing_power', None)
     
     def get_purchase_score(self, country: str) -> float:
         """
@@ -122,7 +123,7 @@ class CountryPurchasePowerChecker:
             return 0.0
             
         try:
-            return float(country_data.get('purchase_score', 0))
+            return country_data.get('purchase_score', 'NULL')
         except (ValueError, TypeError):
             return 0.0
     
@@ -137,13 +138,13 @@ class CountryPurchasePowerChecker:
             Region name or 'Unknown'
         """
         if not country:
-            return 'Unknown'
+            return None
             
         country_data = self.country_data.get(country.lower())
         if not country_data:
-            return 'Unknown'
+            return  None
             
-        return country_data.get('subscriber_region', 'Unknown')
+        return country_data.get('subscriber_region')
 
     def get_timezone(self, country: str) -> str:
         """
@@ -162,7 +163,37 @@ class CountryPurchasePowerChecker:
         if not country_data:
             return 'Unknown'
             
-        return country_data.get('timezone', 'Unknown')
+        return country_data.get('timezone', None)
+    
+    def _format_region_name(self, region_name: str) -> Optional[str]:
+        """
+        Format region name with proper capitalization and spaces.
+        
+        Args:
+            region_name: Original region name
+            
+        Returns:
+            Formatted region name or None if 'Unknown'
+        """
+        if not region_name or region_name.lower() == 'unknown':
+            return None
+            
+        # Replace underscores with spaces and use title case
+        formatted_name = region_name.replace('_', ' ').title()
+        
+        # Special case for specific regions if needed
+        if formatted_name.lower() == "latin america":
+            formatted_name = "South America"
+        if formatted_name.lower() == "asia":
+            formatted_name = "Asia"
+        if formatted_name.lower() == "africa":
+            formatted_name = "Africa"
+        if formatted_name.lower() == "north_america":
+            formatted_name = "North America"
+        if formatted_name.lower() == "Unknown":
+            formatted_name = None
+            
+        return formatted_name
 
 # Create a singleton instance
 _checker = None

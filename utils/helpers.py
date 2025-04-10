@@ -224,3 +224,25 @@ def parse_iso_datetime(date_string: str) -> datetime:
             except ValueError:
                 # Return None for any other format errors
                 return None
+            
+def _format_region_name(self, region_name: str) -> Optional[str]:
+    """
+    Format region name with proper capitalization and spaces.
+    
+    Args:
+        region_name: Original region name
+        
+    Returns:
+        Formatted region name or None if 'Unknown'
+    """
+    if not region_name or region_name.lower() == 'unknown':
+        return None
+        
+    # Replace underscores with spaces and use title case
+    formatted_name = region_name.replace('_', ' ').title()
+    
+    # Special case for specific regions if needed
+    if formatted_name.lower() == "latin america":
+        formatted_name = "South America"
+        
+    return formatted_name
