@@ -278,7 +278,25 @@ class SubscriberModel:
                 if api_field in subscriber_data and subscriber_data[api_field] is not None:
                     db_subscriber[db_field] = subscriber_data[api_field]
             
-            # Handle date fields
+            if 'subscriber_region' in db_subscriber:
+                region = db_subscriber['subscriber_region']
+                if region and region.lower() == 'unknown':
+                    db_subscriber['subscriber_region'] = None
+                elif region:
+                    region_lower = region.lower()
+                    if region_lower == 'asia':
+                        db_subscriber['subscriber_region'] = 'Asia'
+                    elif region_lower == 'africa':
+                        db_subscriber['subscriber_region'] = 'Africa'
+                    elif region_lower == 'europe':
+                        db_subscriber['subscriber_region'] = 'Europe'
+                    elif region_lower in ['north_america', 'north america']:
+                        db_subscriber['subscriber_region'] = 'North America'
+                    elif region_lower in ['latin_america', 'latin america', 'south america']:
+                        db_subscriber['subscriber_region'] = 'South America'
+                    elif region_lower in ['oceania']:
+                        db_subscriber['subscriber_region'] = 'Oceania'
+            
             if 'created_at' in subscriber_data and subscriber_data['created_at']:
                 db_subscriber['created_at'] = parse_iso_datetime(subscriber_data['created_at'])
             
