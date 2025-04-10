@@ -49,7 +49,7 @@ class DatabaseConnectionManager:
                     database=settings.DB_NAME,
                     min_size=settings.DB_POOL_MIN_SIZE,
                     max_size=settings.DB_POOL_MAX_SIZE,
-                    command_timeout=60.0,
+                    command_timeout=180.0,
                 )
                 
                 logger.info("Database connection pool initialized successfully")
