@@ -323,7 +323,7 @@ class GoogleSearch:
             "You are a helpful assistant that identifies the correct LinkedIn profile URL for a person based on their information "
             "and search results. Given a person's information (email, name, location) and search results, find the most likely "
             "LinkedIn profile URL for that person. Only respond with the full URL if you're confident it's correct, or 'null' "
-            "if you can't confidently identify a profile. Don't explain your reasoning."
+            "Most likely the first result is the person we're looking for."
         )
         
         # Clean member_info by removing null/empty values
