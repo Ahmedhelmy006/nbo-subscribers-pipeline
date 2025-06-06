@@ -24,6 +24,7 @@ from cache import cache_manager
 from utils.helpers import mask_email
 from monitoring.system_reporter import system_reporter
 
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
 # Define database initialization and cleanup functions
 async def initialize_database():
@@ -206,12 +207,13 @@ async def process_batch(num_subscribers=20, update_convertkit=True, update_paral
             spec.loader.exec_module(module)
             return module
         
-        # Import pipeline modules directly from their files
-        base_pipeline = import_module_from_file("base", "pipelines/base.py")
-        subscriber_pipeline_module = import_module_from_file("subscriber_pipeline", "pipelines/subscriber_pipeline.py") 
-        location_pipeline_module = import_module_from_file("location_pipeline", "pipelines/location_pipeline.py")
-        referrer_pipeline_module = import_module_from_file("referrer_pipeline", "pipelines/referrer_pipeline.py")
-        linkedin_pipeline_module = import_module_from_file("linkedin_pipeline", "pipelines/linkedin_pipeline.py")
+        project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+        
+        base_pipeline = import_module_from_file("base", os.path.join(project_root, "pipelines/base.py"))
+        subscriber_pipeline_module = import_module_from_file("subscriber_pipeline", os.path.join(project_root, "pipelines/subscriber_pipeline.py")) 
+        location_pipeline_module = import_module_from_file("location_pipeline", os.path.join(project_root, "pipelines/location_pipeline.py"))
+        referrer_pipeline_module = import_module_from_file("referrer_pipeline", os.path.join(project_root, "pipelines/referrer_pipeline.py"))
+        linkedin_pipeline_module = import_module_from_file("linkedin_pipeline", os.path.join(project_root, "pipelines/linkedin_pipeline.py"))
         
         # Get the pipeline classes
         SubscriberPipeline = subscriber_pipeline_module.SubscriberPipeline
