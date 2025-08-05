@@ -48,10 +48,10 @@ API_BASE_URL = "https://api.kit.com/v4"
 WEBHOOK_URL = os.getenv('WEBHOOK_URL')
 
 # Database Configuration
-DB_HOST = os.getenv('DB_HOST', '127.0.0.1')  # Default to localhost
+DB_HOST = os.getenv('DB_HOST', '')  # Default to localhost
 DB_PORT = int(os.getenv('DB_PORT', '5432'))
-DB_NAME = os.getenv('DB_NAME', 'postgres')
-DB_USER = os.getenv('DB_USER', 'postgres')
+DB_NAME = os.getenv('DB_NAME', '')
+DB_USER = os.getenv('DB_USER', '')
 DB_PASSWORD = os.getenv('DB_PASSWORD', '')  # Empty default for security
 DB_POOL_MIN_SIZE = int(os.getenv('DB_POOL_MIN_SIZE', '5'))
 DB_POOL_MAX_SIZE = int(os.getenv('DB_POOL_MAX_SIZE', '20'))
